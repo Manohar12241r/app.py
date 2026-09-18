@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+{% if hotel %}
+Edit Hotel
+{% else %}
+Add Hotel
+{% endif %}
+
+{% endblock %}
+
+{% block content %}
+
+<div class="form-container">
+
+    <h1>
+
+        {% if hotel %}
+        Edit Hotel
+        {% else %}
+        Add New Hotel
+        {% endif %}
+
+    </h1>
+
+
+    <form method="POST">
+
+        <label>
+            Hotel Name *
+        </label>
+
+        <input
+            type="text"
+            name="name"
+            required
+            value="{{ hotel.name if hotel else '' }}"
+        >
+
+
+        <label>
+            Owner Name
+        </label>
+
+        <input
+            type="text"
+            name="owner_name"
+            value="{{ hotel.owner_name if hotel else '' }}"
+        >
+
+
+        <label>
+            Phone Number
+        </label>
+
+        <input
+            type="text"
+            name="phone"
+            value="{{ hotel.phone if hotel else '' }}"
+        >
+
+
+        <label>
+            Address
+        </label>
+
+        <textarea
+            name="address"
+            rows="4"
+        >{{ hotel.address if hotel else '' }}</textarea>
+
+
+        <label>
+            GST Number
+        </label>
+
+        <input
+            type="text"
+            name="gst_number"
+            value="{{ hotel.gst_number if hotel else '' }}"
+        >
+
+
+        <div class="form-buttons">
+
+            <button type="submit">
+
+                {% if hotel %}
+                Update Hotel
+                {% else %}
+                Add Hotel
+                {% endif %}
+
+            </button>
+
+            <a href="{{ url_for('hotels') }}">
+                Cancel
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}
