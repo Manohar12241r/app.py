@@ -1,0 +1,207 @@
+{% extends "base.html" %}
+
+{% block title %}
+Bill {{ bill.bill_number }}
+{% endblock %}
+
+{% block content %}
+
+<div class="bill-page">
+
+    <div class="bill-header">
+
+        <div>
+
+            <h1>
+                Vegetable Market
+            </h1>
+
+            <p>
+                Vegetable Supply Bill Record
+            </p>
+
+        </div>
+
+        <div>
+
+            <strong>
+                Bill No:
+            </strong>
+
+            {{ bill.bill_number }}
+
+            <br>
+
+            <strong>
+                Date:
+            </strong>
+
+            {{ bill.bill_date }}
+
+        </div>
+
+    </div>
+
+
+    <div class="customer-details">
+
+        <h3>
+            Hotel Information
+        </h3>
+
+        <p>
+            <strong>Hotel:</strong>
+            {{ bill.hotel_name }}
+        </p>
+
+        <p>
+            <strong>Owner:</strong>
+            {{ bill.owner_name or "Not provided" }}
+        </p>
+
+        <p>
+            <strong>Phone:</strong>
+            {{ bill.phone or "Not provided" }}
+        </p>
+
+        <p>
+            <strong>Address:</strong>
+            {{ bill.address or "Not provided" }}
+        </p>
+
+        <p>
+            <strong>GST:</strong>
+            {{ bill.gst_number or "Not provided" }}
+        </p>
+
+    </div>
+
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>#</th>
+                <th>Vegetable</th>
+                <th>Quantity</th>
+                <th>Unit</th>
+                <th>Rate</th>
+                <th>Amount</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+        {% for item in items %}
+
+            <tr>
+
+                <td>
+                    {{ loop.index }}
+                </td>
+
+                <td>
+                    {{ item.vegetable_name }}
+                </td>
+
+                <td>
+                    {{ item.quantity }}
+                </td>
+
+                <td>
+                    {{ item.unit }}
+                </td>
+
+                <td>
+                    ₹{{ "%.2f"|format(item.rate) }}
+                </td>
+
+                <td>
+                    ₹{{ "%.2f"|format(item.amount) }}
+                </td>
+
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+
+    <div class="total-section">
+
+        <h2>
+            Total Amount:
+            ₹{{ "%.2f"|format(bill.total_amount) }}
+        </h2>
+
+    </div>
+
+
+    {% if bill.notes %}
+
+    <div class="notes">
+
+        <strong>
+            Notes:
+        </strong>
+
+        <p>
+            {{ bill.notes }}
+        </p>
+
+    </div>
+
+    {% endif %}
+
+
+    <div class="bill-actions">
+
+        <button
+            onclick="window.print()"
+            class="button"
+        >
+            Print
+        </button>
+
+        <a
+            href="{{ url_for(
+                'hotel_detail',
+                hotel_id=bill.hotel_id
+            ) }}"
+            class="button"
+        >
+            Back to Hotel
+        </a>
+
+
+        <form
+            method="POST"
+            action="{{ url_for(
+                'delete_bill',
+                bill_id=bill.id
+            ) }}"
+            onsubmit="return confirm(
+                'Are you sure you want to delete this bill?'
+            );"
+        >
+
+            <button
+                type="submit"
+                class="delete-button"
+            >
+                Delete Bill
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}
