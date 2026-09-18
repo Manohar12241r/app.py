@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}
+All Bills
+{% endblock %}
+
+{% block content %}
+
+<div class="section-header">
+
+    <div>
+
+        <h1>
+            All Bills
+        </h1>
+
+        <p class="subtitle">
+            Search and manage all recorded bills
+        </p>
+
+    </div>
+
+    <a
+        class="button"
+        href="{{ url_for('add_bill') }}"
+    >
+        + Add Bill
+    </a>
+
+</div>
+
+
+<form
+    class="search-form"
+    method="GET"
+    action="{{ url_for('all_bills') }}"
+>
+
+    <input
+        type="text"
+        name="search"
+        placeholder="Search by hotel or bill number..."
+        value="{{ search }}"
+    >
+
+    <button type="submit">
+        Search
+    </button>
+
+</form>
+
+
+{% if bills %}
+
+<table>
+
+    <thead>
+
+        <tr>
+
+            <th>Bill Number</th>
+            <th>Date</th>
+            <th>Hotel</th>
+            <th>Total Amount</th>
+            <th>Action</th>
+
+        </tr>
+
+    </thead>
+
+
+    <tbody>
+
+    {% for bill in bills %}
+
+        <tr>
+
+            <td>
+                {{ bill.bill_number }}
+            </td>
+
+            <td>
+                {{ bill.bill_date }}
+            </td>
+
+            <td>
+                {{ bill.hotel_name }}
+            </td>
+
+            <td>
+                ₹{{ "%.2f"|format(bill.total_amount) }}
+            </td>
+
+            <td>
+
+                <a
+                    href="{{ url_for(
+                        'bill_detail',
+                        bill_id=bill.id
+                    ) }}"
+                >
+                    View
+                </a>
+
+            </td>
+
+        </tr>
+
+    {% endfor %}
+
+    </tbody>
+
+</table>
+
+{% else %}
+
+<div class="empty">
+
+    <h2>
+        No bills found
+    </h2>
+
+</div>
+
+{% endif %}
+
+{% endblock %}
